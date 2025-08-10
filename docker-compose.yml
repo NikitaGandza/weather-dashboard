@@ -1,0 +1,32 @@
+
+services:
+  clickhouse:
+    image: clickhouse/clickhouse-server:25.7
+    container_name: clickhouse
+    ports:
+      - "8123:8123"
+      - "9000:9000"
+    environment:
+      CLICKHOUSE_DB: ${CLICKHOUSE_DB}
+      CLICKHOUSE_USER: ${CLICKHOUSE_USER}
+      CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT: ${CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT}
+      CLICKHOUSE_PASSWORD: ${CLICKHOUSE_PASSWORD}
+    volumes:
+      - /var/lib/clickhouse/
+      - /var/log/clickhouse-server/
+
+  superset:
+    image: apache/superset:3.1.0
+    container_name: superset
+    environment:
+      SUPERSET_SECRET_KEY: ${SUPERSET_SECRET_KEY}
+      ADMIN_USERNAME: ${SUPERSET_USERNAME}
+      ADMIN_PASSWORD: ${SUPERSET_PASSWORD}
+      ADMIN_FIRST_NAME: ${SUPERSET_FIRST_NAME}
+      ADMIN_LAST_NAME: ${SUPERSET_LAST_NAME}
+    ports:
+      - "8088:8088"
+    depends_on:
+      - clickhouse
+    volumes:
+      - ./superset_home:/app/superset_home
