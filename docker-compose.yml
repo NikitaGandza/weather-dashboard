@@ -16,6 +16,16 @@ services:
       - "9092:9092"
       - "29092:29092"
 
+  redpanda-console:
+    image: redpandadata/console:v2.8.8
+    container_name: redpanda-console
+    environment:
+      - KAFKA_BROKERS=host.docker.internal:9092
+    depends_on:
+      - redpanda
+    ports:
+      - "8080:8080"
+
   clickhouse:
     image: clickhouse/clickhouse-server:25.7
     container_name: clickhouse
