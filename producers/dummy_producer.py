@@ -78,4 +78,4 @@ class DummyProducer:
 
 if __name__ == "__main__":
     producer = DummyProducer()
-    producer.run(interval=2)
+    producer.run(interval=10)
