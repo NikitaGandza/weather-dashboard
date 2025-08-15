@@ -10,17 +10,21 @@ services:
     - --reserve-memory=0M
     - --node-id=0
     - --check=false
-    - --kafka-addr=PLAINTEXT://0.0.0.0:9092
-    - --advertise-kafka-addr=redpanda:9092
+    - --kafka-addr=PLAINTEXT://0.0.0.0:9092,OUTSIDE://0.0.0.0:29092
+    - --advertise-kafka-addr=PLAINTEXT://redpanda:9092,OUTSIDE://localhost:29092
+    - --pandaproxy-addr=PLAINTEXT://0.0.0.0:8082,OUTSIDE://0.0.0.0:18082
+    - --advertise-pandaproxy-addr=PLAINTEXT://redpanda:8082,OUTSIDE://localhost:18082
     ports:
       - "9092:9092"
       - "29092:29092"
+      - "8082:8082"
+      - "18082:18082"
 
   redpanda-console:
     image: redpandadata/console:v2.8.8
     container_name: redpanda-console
     environment:
-      - KAFKA_BROKERS=host.docker.internal:9092
+      - KAFKA_BROKERS=redpanda:9092
     depends_on:
       - redpanda
     ports:
@@ -40,6 +44,17 @@ services:
     volumes:
       - /var/lib/clickhouse/
       - /var/log/clickhouse-server/
+
+  dummy-producer:
+    build:
+      context: ./producers
+      dockerfile: Dockerfile
+    container_name: dummy-producer
+    depends_on:
+      - redpanda
+    environment:
+      - KAFKA_BOOTSTRAP_SERVERS=redpanda:9092
+    restart: unless-stopped
 
   superset:
     image: apache/superset:3.1.0
