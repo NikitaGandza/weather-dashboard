@@ -5,6 +5,8 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install -r requirements.txt
 
-copy main_consumer.py .
+copy clickhouse_consumer.py .
+COPY archive_consumer.py .
+COPY run_consumers.sh .
 
-CMD ["python", "main_consumer.py"]
+CMD ["sh", "run_consumers.sh"]
