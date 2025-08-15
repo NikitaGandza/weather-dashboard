@@ -56,6 +56,19 @@ services:
       - KAFKA_BOOTSTRAP_SERVERS=redpanda:9092
     restart: unless-stopped
 
+  consumer:
+    build: 
+      context: ./consumers
+      dockerfile: Dockerfile
+    container_name: consumers
+    depends_on: 
+      - dummy-producer
+      - clickhouse
+    environment:
+      CLICKHOUSE_DB: ${CLICKHOUSE_DB}
+      CLICKHOUSE_USER: ${CLICKHOUSE_USER}
+      CLICKHOUSE_PASSWORD: ${CLICKHOUSE_PASSWORD}
+
   superset:
     image: apache/superset:3.1.0
     container_name: superset

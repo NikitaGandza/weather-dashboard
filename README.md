@@ -18,3 +18,4 @@ Data ingestion from Open-Meteo and visualizing it in Apache Superset
       --password admin 
     docker exec -it superset pip install clickhouse-connect 
     ```
+- Run create table on compose
