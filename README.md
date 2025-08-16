@@ -3,8 +3,6 @@
 Data ingestion from Open-Meteo and visualizing it in Apache Superset
 
 ### To Do:
-- Install requirements file on docker compose up
-- Run producer on start
 - Superset:
   - Create admin acc on docker compose up, install clickhouse driver as a separate file
     ```
@@ -19,3 +17,4 @@ Data ingestion from Open-Meteo and visualizing it in Apache Superset
     docker exec -it superset pip install clickhouse-connect 
     ```
 - Run create table on compose
+- add healthcheck
