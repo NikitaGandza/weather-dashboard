@@ -1,0 +1,13 @@
+# ./dbt/profiles.yml
+clickhouse_project:
+  target: dev
+  outputs:
+    dev:
+      type: clickhouse
+      schema: default
+      host: clickhouse
+      port: 8123
+      user: "{{ env_var('CLICKHOUSE_USER') }}"
+      password: "{{ env_var('CLICKHOUSE_PASSWORD') }}"
+      secure: false
+      verify: false
